@@ -23,39 +23,56 @@ img { float: left; }
 td, th { padding: 5px; text-align: center; }
 ol li { margin-left: 0; }
 .corefile { color: red; }
+.added { color: blue; }
 .removed { text-decoration: line-through; }
 ol li, ul li { margin-top: 5px; margin-bottom: 5px; }
 ul li ul { padding-left: 0; }
 .clearBoth { clear: both; }
+.smaller { font-size: smaller; }
 -->
 </style>
 </head>
 
 <body>
 <h1>Zen Cart v1.5.5 &mdash; Admin Plugin Backward Compatibility</h1>
-<h3>Version 1.0.0</h3>
-<p>Copyright (c) 2015, <a href="http://vinosdefrutastropicales.com">Vinos de Frutas Tropicales</a> (lat9)</p>
+<h3>Version 1.0.1</h3>
+<p>Copyright (c) 2015-2016, <a href="http://vinosdefrutastropicales.com">Vinos de Frutas Tropicales</a> (lat9)</p>
 <p>Current Support Thread at Zen Cart Forums: <a href="https://www.zen-cart.com/showthread.php?219117-ZC1-5-5-Admin-Backward-Compatibility" target="_blank">here</a>.</p>
 
 <h2>What it does</h2>
-<p>Many of the Zen Cart v1.5.5 admin-level scripts have been modified to use a new function named <em>zen_build_subdirectories_array</em>.  This plugin provides a compatibility script so that any author whose plugin modifies admin-level <span class="corefile">core files</span> can merge their plugin's changes with the Zen Cart v1.5.5 version of those files and have a <em>single version</em> of their plugin that properly operates on Zen Cart versions v1.5.0 through v1.5.5!</p>
+<p>Many of the Zen Cart v1.5.5 admin-level scripts have been modified to use new functions introduced in Zen Cart v1.5.5:</p>
+<ul>
+  <li><code>zen_build_subdirectories_array</code></li>
+  <li><code>zen_sort_array</code></li>
+  <li><code>is__writeable</code></li>
+  <li><code>set_unwritable</code></li>
+  <li><code>updateObjectInfo</code>, present in the <em>objectInfo</em> class</li>
+</ul>
+<p>This plugin provides a downward-compatibility path so that any author whose plugin modifies admin-level <span class="corefile">core files</span> can merge their plugin's changes with the Zen Cart v1.5.5 base files and have a <em>single version</em> of their plugin that properly operates on Zen Cart versions v1.5.0 through v1.5.5!</p>
 
-<p>The script is simple in nature; it's auto-loaded just after the admin-level initialization file that defines the function in Zen Cart v1.5.5. When the script loads, it checks to see if <em>zen_build_subdirectories_array</em> is not already defined (i.e. you're <b>not</b> running Zen Cart v1.5.5) and defines that function. That way, the v1.5.5 changes that are merged into a plugin's scripts will operate on pre-Zen Cart v1.5.5 installations.</p>
+<p>The compatibility-script is simple in nature; it's auto-loaded just after the admin-level initialization file that defines those functions in Zen Cart v1.5.5. When the script loads, it checks to see if each of the new functions is already defined (i.e. you're running Zen Cart v1.5.5) and, if not, defines that function. That way, the v1.5.5 changes that are merged into a plugin's scripts will operate on pre-Zen Cart v1.5.5 installations.</p>
+
+<p>This plugin also includes the Zen Cart v1.5.5 version of <code>/YOUR_ADMIN/includes/classes/object_info.php</code>, which contains that new class-function.</p>
 
 <p><b>Note:</b> This plugin is a bit different; it's intended to be included in <em>other</em> plugins' distributions &mdash; it provides no functionality in and of itself.</p>
 
 <p><b>Note, too:</b> For full downward-compatibility, plugin authors should use this plugin in conjunction with <a href="https://www.zen-cart.com/downloads.php?do=file&id=1945" target="_blank">ZC1.5.4 - Admin Plugin Backward Compatibility</a>.</p>
 
 <h2>Usage</h2>
-<p>Include the plugin's two files with your plugin's distribution:</p>
+<p>Include the plugin's three files with your plugin's distribution:</p>
 <ol>
   <li>/YOUR_ADMIN/includes/auto_loaders/config.zc155_compatability.php</li>
+  <li><span class="corefile">/YOUR_ADMIN/includes/classes/object_info.php</span> <span class="smaller">(This is the Zen Cart v1.5.5 version of the file)</span></li>
   <li>/YOUR_ADMIN/includes/init_includes/init_zc155_compatibility.php</li>
 </ol>
 
 <h2>Version History:</h2>
 <ul>
   <li>v1.0.0, 2015-12-25, Initial release.</li>
+  <li>v1.0.1, 2016-01-05, Additional compatibility items:<ol>
+    <li>Changed /YOUR_ADMIN/includes/init_includes/init_zc155_compatibility.php</li>
+    <li><span class="added">Added</span> /YOUR_ADMIN/includes/classes/object_info.php</li>
+  </ol></li>
 </ul>
 </body>
 </html>

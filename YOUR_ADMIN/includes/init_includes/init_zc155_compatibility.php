@@ -1,7 +1,7 @@
 <?php
 // -----
 // Common Module (used by many of my plugins) to provide downward compatibility to Zen Cart v1.5.5 admin-level changes.  Created by lat9 (http://vinosdefrutastropicales.com)
-// Copyright (c) 2015 Vinos de Frutas Tropicales
+// Copyright (c) 2015-2016, Vinos de Frutas Tropicales
 //
 if (!defined('IS_ADMIN_FLAG') || IS_ADMIN_FLAG !== true) {
     die('Illegal Access');
@@ -73,4 +73,43 @@ if (!function_exists ('zen_sort_array')) {
     return $data;
   }
 
+}
+
+if (!function_exists ('is__writeable')) {
+  /**
+   * function to override PHP's is_writable() which can occasionally be unreliable due to O/S and F/S differences
+   * attempts to open the specified file for writing. Returns true if successful, false if not.
+   * if a directory is specified, uses PHP's is_writable() anyway
+   *
+   * @var string
+   * @return boolean
+   */
+  function is__writeable($filepath, $make_unwritable = true) {
+    if (is_dir($filepath)) return is_writable($filepath);
+    $fp = @fopen($filepath, 'a');
+    if ($fp) {
+      @fclose($fp);
+      if ($make_unwritable) set_unwritable($filepath);
+      $fp = @fopen($filepath, 'a');
+      if ($fp) {
+        @fclose($fp);
+        return true;
+      }
+    }
+    return false;
+  }
+  
+}
+
+if (!function_exists ('set_unwriteable')) {
+  /**
+   * attempts to make the specified file read-only
+   *
+   * @var string
+   * @return boolean
+   */
+  function set_unwritable($filepath) {
+    return @chmod($filepath, 0444);
+  }
+  
 }
