@@ -101,7 +101,7 @@ if (!function_exists ('is__writeable')) {
   
 }
 
-if (!function_exists ('set_unwriteable')) {
+if (!function_exists ('set_unwritable')) {
   /**
    * attempts to make the specified file read-only
    *
